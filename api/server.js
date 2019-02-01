@@ -6,13 +6,13 @@ const server = express();
 server.use(express.json());
 
 
-server.get('/songs', async (req, res) => {
+server.get('/games', async (req, res) => {
     const list = await db.get();
 
     res.status(200).json(list);
 });
 
-server.post('/songs', async (req, res) => {
+server.post('/games', async (req, res) => {
     const gameInfo = req.body;
     if (gameInfo.title && gameInfo.genre) {
         db.insert(gameInfo).then(response => {

@@ -9,9 +9,9 @@ function get() {
     return db('games');
 }
 
-function insert(id) {
-    const [id] = await db('songs').insert(song);
+async function insert(game) {
+    const [id] = await db('games').insert(game);
 
-    return db('songs').where({ id })
+    return db('games').where({ id })
         .first();
 }
