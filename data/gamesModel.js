@@ -5,8 +5,16 @@ module.exports = {
     get,
 };
 
-function get() {
-    return db('games');
+function get(id) {
+    let query = db('games');
+
+    if (id) {
+        return query
+            .where('id', id)
+            .first()
+
+    }
+    return query;
 }
 
 async function insert(game) {

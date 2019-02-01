@@ -80,5 +80,40 @@ describe('server.js', () => {
             expect(response.body.msg).toBe('title must be unique');
         })
     })
+
+    describe('GET /:id endpoint', () => {
+        it('should respond with status code 404', async () => {
+            await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'platformer', releaseYear: 1999 });
+            let response = await request(server).get('/games/2');
+
+            expect(response.status).toBe(404);
+            expect(response.body.msg).toBe('project with Id not found');
+            // expect(response.body.title).toBe('this is another title');
+        })
+
+        it('should respond with status code 200', async () => {
+            await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'platformer', releaseYear: 1999 });
+            await request(server).post('/games')
+                .send({ title: 'this is another title', genre: 'platformer', releaseYear: 1999 });
+            let response = await request(server).get('/games/2');
+
+            expect(response.status).toBe(200);
+            expect(response.body.title).toBe('this is another title');
+        })
+
+        it('should respond with one object', async () => {
+            await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'platformer', releaseYear: 1999 });
+            await request(server).post('/games')
+                .send({ title: 'this is another title', genre: 'platformer', releaseYear: 1999 });
+
+            let response = await request(server).get('/games/2');
+
+            expect(typeof response.body).toBe('object');
+            expect(response.body.genre).toBe('platformer');
+        });
+    })
 });
 

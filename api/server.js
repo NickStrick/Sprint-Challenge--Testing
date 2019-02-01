@@ -12,6 +12,30 @@ server.get('/games', async (req, res) => {
     res.status(200).json(list);
 });
 
+server.get('/games/:id', (req, res) => {
+    let { id } = req.params;
+
+    db.get()
+        .then(games => {
+            let found = false;
+            for (let i = 0; i < games.length; i++) {
+                if (games[i].id == id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                db.get(id)
+                    .then(list => {
+                        res.status(200).json(list);
+                    })
+            } else {
+                res.status(404).json({ msg: 'project with Id not found' });
+            }
+        })
+
+});
+
 server.post('/games', async (req, res) => {
     const gameInfo = req.body;
     if (gameInfo.title && gameInfo.genre) {
