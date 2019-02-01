@@ -33,7 +33,6 @@ server.get('/games/:id', (req, res) => {
                 res.status(404).json({ msg: 'project with Id not found' });
             }
         })
-
 });
 
 server.post('/games', async (req, res) => {
@@ -46,6 +45,29 @@ server.post('/games', async (req, res) => {
     } else {
         res.status(422).json('Must include title and genre');
     }
+})
+
+server.delete('/games/:id', (req, res) => {
+    let { id } = req.params;
+
+    db.get()
+        .then(games => {
+            let found = false;
+            for (let i = 0; i < games.length; i++) {
+                if (games[i].id == id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                db.remove(id)
+                    .then(count => {
+                        res.status(200).json(count);
+                    })
+            } else {
+                res.status(404).json({ msg: 'project with Id not found' });
+            }
+        })
 })
 
 module.exports = server;

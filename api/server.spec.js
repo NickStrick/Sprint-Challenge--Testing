@@ -89,7 +89,6 @@ describe('server.js', () => {
 
             expect(response.status).toBe(404);
             expect(response.body.msg).toBe('project with Id not found');
-            // expect(response.body.title).toBe('this is another title');
         })
 
         it('should respond with status code 200', async () => {
@@ -115,5 +114,16 @@ describe('server.js', () => {
             expect(response.body.genre).toBe('platformer');
         });
     })
+
+    describe('DELETE /:id endpoint', () => {
+        it('should respond with status code 404', async () => {
+            await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'platformer', releaseYear: 1999 });
+            let response = await request(server).delete('/games/2');
+
+            expect(response.status).toBe(404);
+            expect(response.body.msg).toBe('project with Id not found');
+        })
+    });
 });
 
