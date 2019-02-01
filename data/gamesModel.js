@@ -6,9 +6,12 @@ module.exports = {
 };
 
 function get() {
-    return null;
+    return db('games');
 }
 
 function insert(id) {
-    return null;
+    const [id] = await db('songs').insert(song);
+
+    return db('songs').where({ id })
+        .first();
 }
