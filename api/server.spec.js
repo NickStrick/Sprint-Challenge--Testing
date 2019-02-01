@@ -69,6 +69,16 @@ describe('server.js', () => {
             games = await db('games');
             expect(games).toHaveLength(2);
         })
+
+        it('should have a unique title', async () => {
+            await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'platformer', releaseYear: 1999 });
+            let response = await request(server).post('/games')
+                .send({ title: 'this is a title', genre: 'runner', releaseYear: 2000 });
+
+            expect(response.status).toBe(405);
+            expect(response.body.msg).toBe('title must be unique');
+        })
     })
 });
 

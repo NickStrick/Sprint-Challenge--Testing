@@ -18,7 +18,7 @@ server.post('/games', async (req, res) => {
         db.insert(gameInfo).then(response => {
             res.status(201).json(response);
         })
-            .catch(err => res.status(400).json(err))
+            .catch(err => res.status(405).json({ err, msg: 'title must be unique' }))
     } else {
         res.status(422).json('Must include title and genre');
     }
